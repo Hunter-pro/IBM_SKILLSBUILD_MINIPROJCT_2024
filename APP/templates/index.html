@@ -1,0 +1,58 @@
+<!doctype html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Upload Resume</title>
+    <link rel="stylesheet" href="{{ url_for('static', filename='styles.css') }}">
+</head>
+<body>
+    <div class="container">
+        <h1>Upload your Resume (PDF)</h1>
+        <form action="{{ url_for('upload_file') }}" method="post" enctype="multipart/form-data">
+            <input type="file" name="file">
+            <input type="submit" value="Upload">
+        </form>
+        {% if extracted_data %}
+        <h2>Extracted Data</h2>
+        <form action="{{ url_for('update_data') }}" method="post">
+            <details>
+                <summary>Personal Information</summary>
+                <label for="name">Name:</label>
+                <input type="text" id="name" name="name" value="{{ extracted_data.name }}"><br>
+                <label for="email">Email:</label>
+                <input type="email" id="email" name="email" value="{{ extracted_data.email }}"><br>
+                <label for="phone">Phone:</label>
+                <input type="text" id="phone" name="phone" value="{{ extracted_data.mobile_number }}"><br>
+            </details>
+            <details>
+                <summary>Skills</summary>
+                <label for="skills">Skills:</label>
+                <input type="text" id="skills" name="skills" value="{{ extracted_data.skills | join(', ') }}"><br>
+            </details>
+            <details>
+                <summary>Education</summary>
+                <label for="education">Education:</label>
+                <input type="text" id="education" name="education" value="{{ extracted_data.education | join(', ') }}"><br>
+            </details>
+            <details>
+                <summary>Experience</summary>
+                <label for="experience">Experience:</label>
+                <input type="text" id="experience" name="experience" value="{{ extracted_data.experience | join(', ') }}"><br>
+            </details>
+            <details>
+                <summary>Other Information</summary>
+                <label for="no_of_pages">Number of Pages:</label>
+                <input type="text" id="no_of_pages" name="no_of_pages" value="{{ extracted_data.no_of_pages }}"><br>
+            </details>
+            <input type="submit" value="Update">
+        </form>
+        <h2>Predicted Profession: {{ extracted_data.profession }}</h2>
+        <h2>Timeline Plan:</h2>
+        <div class="timeline-plan">
+            <p>{{ extracted_data.timeline_plan }}</p>
+        </div>
+        {% endif %}
+    </div>
+</body>
+</html>
